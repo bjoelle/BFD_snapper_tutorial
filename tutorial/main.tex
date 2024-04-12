@@ -1,6 +1,3 @@
-% This file was created (at least in part) by the script ParseMdtoLatex by Louis du Plessis
-% (Available from https://github.com/taming-the-beast)
-
 \documentclass[11pt]{article}
 \input{preamble}
 
@@ -241,7 +238,8 @@ You can import a custom mapping file that links each sample to a species using t
 
 \subsubsection{Setting the model parameters}
 
-Next, we set up our model under the \textbf{Model Parameters} tab Figure~\ref{fig:beauti-mutation}.
+Next, we set up our model under the \textbf{Model Parameters} tab.
+
 Be sure to read the documentation \href{http://www.beast2.org/tutorials}{A rough guide to SNAPP} to learn more about the model options\footnote{For SNAPP, the mutation rates U and V representing instantaneous rate of mutating from the 0 allele to the 1 allele and from 1 to 0 respectively are included in the model. However, keeping U and V equal to 1 seems more appropriate, so these parameters are hidden in BEAUti for the SNAPPER model.}. Briefly, the main parameter of interest is the {\tt Coalescent Rate} which determines the population size parameter with one value for each node in the tree.
 
 \textit{Recommendations:}  %Set mutation rates u and v = 1 and do not sample. Alternatively, you can click the {\bf ``Calc mutation rates''} button to get a direct estimate of u and v. Either way, you typically do not have to estimate these parameters during the MCMC. 
@@ -262,18 +260,20 @@ The ``Use Log Likelihood Correction'' checkbox is for calculating corrected like
 When the ``Use beta root prior'' checkbox is checked, instead of using a uniform prior for allele frequencies at the root, a beta root prior is used.
 
 
-\begin{figure}[htbp]
-    \centering
-    \fbox{\includegraphics[width=0.8\textwidth]{../figures/beauti-model-parameters.png}}
-    \caption{The SNAPPER model options.}
-    \label{fig:beauti-mutation}
-\end{figure}
-
 Following these recommendations, the only change we need to make here is to tell BEAUti that our alignment is made of polymorphic sites only.
 
 \begin{framed}
     Uncheck the \textbf{Non-polymorphic} checkbox.
 \end{framed}
+
+The final setup will appear as in Figure~\ref{fig:beauti-model}.
+
+\begin{figure}[ht]
+    \centering
+    \fbox{\includegraphics[width=0.8\textwidth]{../figures/beauti-model-parameters.png}}
+    \caption{The SNAPPER model options.}
+    \label{fig:beauti-model}
+\end{figure}
     
 \subsubsection{Defining the priors}
 
@@ -322,7 +322,7 @@ In this case, we are going to set a gamma prior with a broad distribution, for e
     The prior set up should look like Figure \ref{fig:beauti-prior}.
 \end{framed}
 
-\begin{figure}[htbp]
+\begin{figure}[ht]
     \centering
     \fbox{\includegraphics[width=0.8\textwidth]{../figures/beauti-prior.png}}
     \caption{The prior settings: using a gamma prior for the birth rate.}
@@ -331,7 +331,7 @@ In this case, we are going to set a gamma prior with a broad distribution, for e
 
 Figure \ref{fig:lambda_comparison} shows a comparison of two different options for setting lambda: using a fixed value (lambda = 5) versus assigning a broad gamma prior as we did. In this case, tree height estimates are similar using either a fixed lambda or a gamma distribution. 
 
-\begin{figure}[htbp]
+\begin{figure}[ht]
     \centering
     \fbox{\includegraphics[width=0.8\textwidth]{../figures/lambda_comparision.png}}
     \caption{Tree height comparison of analyses using a fixed lambda (lambda = 5) versus a hyperprior on lambda (gamma distribution with mean = 4). The plot shows the marginal probability distributions superimposed for the two estimates, which overlap broadly suggesting that the estimates are quite similar.}
@@ -341,18 +341,19 @@ Figure \ref{fig:lambda_comparison} shows a comparison of two different options f
     
 \textit{Setting the expected divergence (theta) prior.} Recall that for a diploid population, theta = 4Nu, where N is the effective population size and u is the per-generation mutation rate. If theta=0.004, you expect to observe 0.4\% variation between two randomly sampled alleles in a population. Another way to think about this is in the expected number of substitutions; ``theta=0.004'' means that for two randomly sampled individuals within a population you expect to observe 4 SNPs in 1,000 bases. In SNAPPER, the gamma prior on theta is parameterised such that the mean is alpha*beta. For example, if alpha=2 and beta = 0.002, the prior mean on theta is 0.004. One way of estimating a reasonable mean for the theta prior is to calculate pairwise sequence divergence among all individuals known to belong to a single species and take the average value as the mean for theta. Higher prior means on theta will favour models with populations grouped together, because they represent an expectation that average divergence within populations is relatively high. 
 You can select different distributions for the theta prior in the \textbf{Priors} panel. If the prior is set to ``Gamma'' (recommended), the mean value of theta is calculated as alpha*beta when using the ShapeScale mode.  Note that in some implementations, the mean of a gamma distribution is calculated as alpha/beta rather than alpha*beta. 
+Here we will leave the default prior.
 
-\begin{framed}
-    In the \textbf{Priors} tab, click on the arrow next to \textbf{snapperCoalescenceRate} to open the prior details and set \textbf{alpha} to \textbf{100} and \textbf{beta} to \textbf{0.01}.
-    The prior set up should look like Figure \ref{fig:beauti-prior2}.
-\end{framed}
+% \begin{framed}
+%     In the \textbf{Priors} tab, click on the arrow next to \textbf{snapperCoalescenceRate} to open the prior details and set \textbf{alpha} to \textbf{100} and \textbf{beta} to \textbf{0.01}.
+%     The prior set up should look like Figure \ref{fig:beauti-prior2}.
+% \end{framed}
 
-\begin{figure}[htbp]
-    \centering
-    \fbox{\includegraphics[width=0.8\textwidth]{../figures/beauti-prior2.png}}
-    \caption{The prior settings for the coalescence rate.}
-    \label{fig:beauti-prior2}
-\end{figure}  
+% \begin{figure}[htbp]
+%     \centering
+%     \fbox{\includegraphics[width=0.8\textwidth]{../figures/beauti-prior2.png}}
+%     \caption{The prior settings for the coalescence rate.}
+%     \label{fig:beauti-prior2}
+% \end{figure}  
 
 
 \subsubsection{Specify MCMC settings and generate the XML file.}
@@ -378,7 +379,7 @@ Thorough analyses of the full data take 2 -- 6 days, depending on the number of 
 
 \begin{figure}[htbp]
     \centering
-    \fbox{\includegraphics[width=1.0\textwidth]{../figures/beauti-mcmc.png}}
+    \fbox{\includegraphics[width=0.75\textwidth]{../figures/beauti-mcmc.png}}
     \caption{The MCMC settings.}
     \label{fig:beauti-mcmc}
 \end{figure}
@@ -438,6 +439,8 @@ Our run has generated 2 different files:
 \item \passthrough{\lstinline!RunA.trees!} which recorded the sampled trees in Nexus format.
 \end{itemize}
 
+By loading the log file into Tracer, we can check that as we expected, we are very far from the convergence of the chain. You can also find two sets of prepared log files in the tutorial, one run with the MCMC parameters set as above (\passthrough{\lstinline!short!}) and one with a longer chain length \passthrough{\lstinline!long!}.
+
 \subsubsection{Summarising the species tree using TreeAnnotator.}
 
 TreeAnnotator will summarize the posterior distribution of species trees and identify the topology with the best posterior support, and summarise the divergence times for each node in the tree.
@@ -463,13 +466,35 @@ We can look at our summary species tree in FigTree.
 \end{framed}
 
  
-You can also get a summary of some tree statistics using the TreeSetAnalyser, which you can launch from the BEAST app launcher, and looks something like Figure~\ref{fig:treesetanalyser}
+You can also get a summary of some tree statistics using the TreeSetAnalyser application, which you can launch from the BEAST app launcher.
+
+\begin{framed}
+    First, start the BEAST app-store by selecting the \textbf{File \textgreater{} Launch apps} menu in BEAUti (alternatively, double click the \textbf{AppLauncher} program in the BEAST folder). A window similar to Figure~\ref{fig:appstore} should pop up.
+    Select the \textbf{SNAPP tree set analyzer} app, and hit the \textbf{Launch} button. 
+\end{framed}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{../figures/appstore}
+    \caption{BEAST app launcher.}
+    \label{fig:appstore}
+\end{figure}
+
+A window similar to Figure~\ref{fig:treesetanalyser} will open.
+
 \begin{figure}[htbp]
     \centering
     \fbox{\includegraphics[width=0.75\textwidth]{../figures/treesetanalyser.png}}
     \caption{Tree set analyser utility.}
     \label{fig:treesetanalyser}
 \end{figure}
+
+\begin{framed}
+    Select the \textbf{Browse} button next to the \textbf{Trees} input and select the file \passthrough{\lstinline!runA.trees!}.
+    Click on \textbf{OK} to process the file.
+\end{framed}
+
+TreeSetAnalyser will compute a summary of the posterior species tree distribution. It will print how many distinct topologies are present in the full distribution and in the 95\% HPD interval, as well as a table of all topologies with their frequency in the posterior distribution, ranked by highest frequency.
 
 
 \subsection{Running the path sampling analysis with BEAST2}
@@ -481,18 +506,11 @@ Species delimitation using SNPs requires marginal likelihood estimation. There a
 In this subsubsection, we explain how to set up the analysis using the GUI.
 
 \begin{framed}
-    First, start the BEAST app-store by selecting the \textbf{File \textgreater{} Launch apps} menu in BEAUti (alternatively, double click the \textbf{AppLauncher} program in the BEAST folder). A window similar to Figure~\ref{fig:appstore} should pop up.
+    As before, start the BEAST app-store by selecting the \textbf{File \textgreater{} Launch apps} menu in BEAUti (alternatively, double click the \textbf{AppLauncher} program in the BEAST folder). A window similar to Figure~\ref{fig:appstore} should pop up.
     Select the \textbf{Path sampler} app, and hit the \textbf{Launch} button.
 \end{framed}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.6\textwidth]{../figures/appstore}
-    \caption{BEAST app launcher.}
-    \label{fig:appstore}
-\end{figure}
-
-A new window pops up with the GUI for path sampling/stepping stone analysis similar to Figure~\ref{fig:pathsampler}. 
+A new window opens with the GUI for path sampling/stepping stone analysis, similar to Figure~\ref{fig:pathsampler}. 
 
 If you prefer to start the app from the command line, you can use the following in a terminal:
 
@@ -671,7 +689,8 @@ The results for the seven gecko models are provided in Table \ref{tab:model_sele
 % Please do not change the license
 % Add the author names and relevant links
 % Add any other aknowledgments here
-\href{http://creativecommons.org/licenses/by/4.0/}{\includegraphics[scale=0.8]{../figures/ccby.pdf}} This tutorial was originally written by Adam Leaché and Remco Bouckaert. It was adapted by Joëlle Barido-Sottani for \href{https://taming-the-beast.github.io}{Taming the BEAST} and is licensed under a \href{http://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}.
+\href{http://creativecommons.org/licenses/by/4.0/}{\includegraphics[scale=0.8]{../figures/ccby.pdf}} This tutorial was originally written by Adam Leaché and Remco Bouckaert (original version \href{https://github.com/BEAST2-Dev/beast-docs/releases/download/v1.0/snapper-delimitation-tutorial-2021.zip}{on the BEAST2 website}). 
+It was adapted by Joëlle Barido-Sottani for \href{https://taming-the-beast.github.io}{Taming the BEAST} and is licensed under a \href{http://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}.
 
 
 %%%%%%%%%%%%%%%%%%%%

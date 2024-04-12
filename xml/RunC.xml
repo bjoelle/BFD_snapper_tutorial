@@ -153,8 +153,8 @@ name="rawdata">
                 </prior>
                 <prior id="SnapperCoalescentRatePrior.t:hemi129" name="distribution" x="@snapperCoalescentRate.t:hemi129">
                     <Gamma id="Gamma.2" name="distr">
-                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="alpha">100.0</parameter>
-                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="beta">0.01</parameter>
+                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="alpha">0.01</parameter>
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="beta">100.1</parameter>
                     </Gamma>
                 </prior>
             </distribution>

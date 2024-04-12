@@ -6,6 +6,7 @@ main.bbl
 main.blg
 main-blx.bib
 main.pdf
+*.synctex.gz
 
 .DS_Store
 precooked_runs/uncompressed
